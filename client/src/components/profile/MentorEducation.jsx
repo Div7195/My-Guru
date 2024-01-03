@@ -153,9 +153,9 @@ const deleteEducationApi = () => {
                     fontWeight: 700,
                     fontFamily:'DM Sans'
                 }}>
-                <div>
+                {/* <div>
                 Add Education Details
-                </div>
+                </div> */}
                 <div style={{
                     color:'#566474',
                     

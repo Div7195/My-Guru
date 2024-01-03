@@ -162,9 +162,9 @@ const deleteProjectApi = () => {
                     fontWeight: 700,
                     fontFamily:'DM Sans'
                 }}>
-                <div>
+                {/* <div>
                 Add Plans
-                </div>
+                </div> */}
                 <div style={{
                     color:'#566474',
                     

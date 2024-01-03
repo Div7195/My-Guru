@@ -27,7 +27,36 @@ import { styled } from '@mui/material/styles';
 import CameraAltIcon from '@mui/icons-material/CameraAlt';
 import Image from "@mui/icons-material/Image.js"
 
+const gradientBackgroundStyle = {
+  position: 'fixed',
+  top: 0,
+  left: 0,
+  width: '100vw',
+  height: '100vh',
+  zIndex: -1,
+  animation: 'changeColors 10s infinite linear',
+};
 
+// CSS animation keyframes
+const keyframes = `
+  @keyframes changeColors {
+    0% {
+      background: linear-gradient(45deg, #ff0000, #00ff00, #0000ff);
+    }
+    25% {
+      background: linear-gradient(45deg, #0000ff, #ff0000, #00ff00);
+    }
+    50% {
+      background: linear-gradient(45deg, #00ff00, #0000ff, #ff0000);
+    }
+    75% {
+      background: linear-gradient(45deg, #ff0000, #00ff00, #0000ff);
+    }
+    100% {
+      background: linear-gradient(45deg, #0000ff, #ff0000, #00ff00);
+    }
+  }
+`;
 
 function CustomTabPanel(props) {
     const { children, value, index, ...other } = props;
@@ -143,7 +172,9 @@ const MentorProfile = () => {
     }
 
 
-
+    const styleTag = document.createElement('style');
+    styleTag.appendChild(document.createTextNode(keyframes));
+    document.head.appendChild(styleTag);
 
     
     const [mentor, setMentor] = useState(mentorObjInitial)
@@ -172,7 +203,9 @@ const MentorProfile = () => {
         if (!selectedExams.includes(exam)) {
           setSelectedExams([...selectedExams, exam]);
           setMentor({ ...mentor, mentorExams: [...mentor.mentorExams, exam] });
-           console.log(mentor);
+          updateProfile();
+          console.log(mentor);
+         
         }
       };
     
@@ -183,7 +216,9 @@ const MentorProfile = () => {
           mentorExams: mentor.mentorExams.filter((e) => e !== exam),
            
         });
+        updateProfile();
         console.log(mentor);
+       
       };
 
 
@@ -208,8 +243,9 @@ const MentorProfile = () => {
         if (!selectedSubjects.includes(subject)) {
           setSelectedSubjects([...selectedSubjects, subject]);
           setMentor({ ...mentor, mentorSubjects: [...mentor.mentorSubjects, subject] });
-          
+      updateProfile(); 
       console.log(mentor);
+ 
         }
       };
       
@@ -220,8 +256,9 @@ const MentorProfile = () => {
           mentorSubjects: mentor.mentorSubjects.filter((s) => s !== subject),
          
         });
-
-        console.log(mentor);
+        updateProfile();
+         console.log(mentor);
+        
       };
 
 
@@ -686,8 +723,8 @@ const MentorProfile = () => {
             style={{
               position: 'fixed',  // Set the position to fixed
               top: '20px',  // Adjust the top position as needed
-              right: '5px',  // 
-                width: '15%',  // Set the width to 30% of the screen
+              right: '1px',  // 
+                width: '17%',  // Set the width to 30% of the screen
                 height: '100vh',  // Set the height to 100% of the viewport height
                 float: 'right',  // Align the div to the right
                 backgroundColor: 'lightgray',  // Example background color
@@ -706,11 +743,11 @@ const MentorProfile = () => {
                 }}
             />
         </div>
+       
         </>
+        
     )
 }
-
-
 
 
 
