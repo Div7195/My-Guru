@@ -26,6 +26,9 @@ import MentorPlans from "./MentorPlans.jsx"
 import { styled } from '@mui/material/styles';
 import CameraAltIcon from '@mui/icons-material/CameraAlt';
 import Image from "@mui/icons-material/Image.js"
+
+
+
 function CustomTabPanel(props) {
     const { children, value, index, ...other } = props;
   
@@ -72,7 +75,7 @@ const StyledTabs = styled((props) => (
       backgroundColor: 'transparent',
     },
     '& .MuiTabs-indicatorSpan': {
-      maxWidth: 40,
+      maxWidth: 60,
       width: '100%',
       backgroundColor: '#2bedbc',
     },
@@ -84,12 +87,12 @@ const StyledTabs = styled((props) => (
       fontWeight: theme.typography.fontWeightRegular,
       fontSize: theme.typography.pxToRem(15),
       marginRight: theme.spacing(1),
-      color: 'rgba(255, 255, 255, 0.7)',
+      color: 'rgba(255, 25, 255, 0.7)',
       '&.Mui-selected': {
-        color: 'rgba(255, 255, 255, 0.7)',
+        color: 'rgba(25, 255, 25, 0.7)',
       },
       '&.Mui-focusVisible': {
-        backgroundColor: 'rgba(100, 95, 228, 0.32)',
+        backgroundColor: 'rgba(100, 95, 28, 0.32)',
       },
     }),
   );
@@ -101,6 +104,22 @@ const MentorProfile = () => {
     const {account}=useContext(DataContext);
     const {setAccount} = useContext(DataContext);
     const [imageFile, setImageFile] = useState(null)
+
+    const [searchExam, setSearchExam] = useState("");
+    const [searchSubject, setSearchSubject] = useState("");
+  
+    const filteredExams = exams.filter((exam) =>
+      exam.toLowerCase().includes(searchExam.toLowerCase())
+    );
+  
+    const filteredSubjects = subjects.filter((subject) =>
+      subject.toLowerCase().includes(searchSubject.toLowerCase())
+    );
+  
+    const [selectedExams, setSelectedExams] = useState([]);
+    const [selectedSubjects, setSelectedSubjects] = useState([]);
+
+
     const mentorObjInitial = {
             mentorAccountId:account.id,
                 mentorName:'',
@@ -122,10 +141,15 @@ const MentorProfile = () => {
                 statistics:{},
                 
     }
+
+
+
+
+    
     const [mentor, setMentor] = useState(mentorObjInitial)
     const handleTextFieldsChange = (e) => {
         setMentor({...mentor, [e.target.name]: e.target.value});
-        console.log(mentor)
+        console.log(mentor);
     }
     const [value, setValue] = useState(0)
 
@@ -134,25 +158,75 @@ const MentorProfile = () => {
     };
     const handleExamSelect = (e) => {
         setMentor({...mentor, mentorExams:[...mentor.mentorExams, e.target.value]});
-        console.log(mentor)
+        console.log(mentor);
     }
     const handleDeleteExam = (exam) => {
         setMentor({...mentor, mentorExams:mentor.mentorExams.filter((e)=>{
             if(e !== exam) return e;
         })});
-        console.log(mentor)
+        console.log(mentor);
     }
+
+
+    const handleSelectExam = (exam) => {
+        if (!selectedExams.includes(exam)) {
+          setSelectedExams([...selectedExams, exam]);
+          setMentor({ ...mentor, mentorExams: [...mentor.mentorExams, exam] });
+           console.log(mentor);
+        }
+      };
+    
+      const handleDeselectExam = (exam) => {
+        setSelectedExams(selectedExams.filter((e) => e !== exam));
+        setMentor({
+          ...mentor,
+          mentorExams: mentor.mentorExams.filter((e) => e !== exam),
+           
+        });
+        console.log(mentor);
+      };
+
+
+
+
+
+
+
     const handleSubjectSelect = (e) => {
         setMentor({...mentor, mentorSubjects:[...mentor.mentorSubjects, e.target.value]});
-        console.log(mentor)
+        console.log(mentor);
     }
     const handleDeleteSubject = (exam) => {
         setMentor({...mentor, mentorSubjects:mentor.mentorSubjects.filter((e)=>{
             if(e !== exam) return e;
         })});
-        console.log(mentor)
+        console.log(mentor);
     }
 
+      
+    const handleSelectSubject = (subject) => {
+        if (!selectedSubjects.includes(subject)) {
+          setSelectedSubjects([...selectedSubjects, subject]);
+          setMentor({ ...mentor, mentorSubjects: [...mentor.mentorSubjects, subject] });
+          
+      console.log(mentor);
+        }
+      };
+      
+      const handleDeselectSubject = (subject) => {
+        setSelectedSubjects(selectedSubjects.filter((s) => s !== subject));
+        setMentor({
+          ...mentor,
+          mentorSubjects: mentor.mentorSubjects.filter((s) => s !== subject),
+         
+        });
+
+        console.log(mentor);
+      };
+
+
+
+ 
     const updateProfile = async() => {
         
         const settings = {
@@ -230,7 +304,145 @@ const MentorProfile = () => {
 
     return(
         <>
-            <div style={{
+     <MentorSidebar/>
+   <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: '20px' }}>
+       <div style={{ color: 'black', marginBottom: '20px' }}>Add a profile picture</div>
+       <div style={{ position: 'relative', width: '100px', height: '100px', marginBottom: '20px' }}>
+           <FormControl>
+               <label htmlFor="fileInput">
+                   <CameraAltIcon style={{ color: '#00ecff', fontSize: '40px', position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -30%)' }} />
+                 <input
+                      type="file"
+                      id="fileInput"
+                      style={{ display: 'none' }}
+                      onChange={(e) => setImageFile(e.target.files[0])}
+                  />
+              </label>
+          </FormControl>
+          <div
+              style={{
+                  borderRadius: '50%',
+                  background: '#cda8ff',
+                  padding: '1px',
+                  textAlign: 'center',
+                  overflow: 'hidden',
+                  position: 'absolute',
+                  top: '50%',
+                  left: '50%',
+                  transform: 'translate(-50%, -50%)',
+                  width: '100%',
+                  height: '100%',
+              }}
+          >
+              <img
+                  src={
+                      mentor.mentorImage && mentor.mentorImage !== ''
+                          ? mentor.mentorImage
+                          : 'https://e7.pngegg.com/pngimages/178/595/png-clipart-user-profile-computer-icons-login-user-avatars-monochrome-black.png'
+                  }
+                  alt="Mentor Image"
+                  style={{
+                      width: '100%',
+                      height: '100%',
+                      borderRadius: '50%',
+                      objectFit: 'cover',
+                  }}
+              />
+          </div>
+      </div>
+
+      <div style={{ display: 'flex', flexDirection: 'column', width: '300px' }}>
+          <div style={{ color: 'black', marginBottom: '10px' }}>Name</div>
+          <div style={{ background: '#d8ebf0' }}>
+              <TextField
+                  name="mentorName"
+                  value={mentor.mentorName}
+                  onChange={(e) => handleTextFieldsChange(e)}
+                  id="filled-multiline-flexible"
+                  label="Multiline"
+                  multiline
+                  maxRows={4}
+                  style={{ width: '100%' }}
+                  variant="filled"
+              />
+          </div>
+      </div>
+
+      <div style={{ display: 'flex', flexDirection: 'column', width: '300px', marginTop: '20px' }}>
+          <div style={{ color: 'black', marginBottom: '10px' }}>Email</div>
+          <div style={{ background: '#d8ebf0' }}>
+              <TextField
+                  name="mentorEmail"
+                  value={mentor.mentorEmail}
+                  onChange={(e) => handleTextFieldsChange(e)}
+                  id="filled-multiline-flexible"
+                  label="Multiline"
+                  multiline
+                  maxRows={4}
+                  style={{ width: '100%' }}
+                  variant="filled"
+              />
+          </div>
+      </div>
+
+      <div style={{ display: 'flex', flexDirection: 'column', width: '300px', marginTop: '20px' }}>
+          <div style={{ color: 'black', marginBottom: '10px' }}>Contact</div>
+          <div style={{ background: '#d8ebf0' }}>
+              <TextField
+                  name="mentorContact"
+                  value={mentor.mentorContact}
+                  onChange={(e) => handleTextFieldsChange(e)}
+                  id="filled-multiline-flexible"
+                  label="Multiline"
+                  multiline
+                  maxRows={4}
+                  style={{ width: '100%' }}
+                  variant="filled"
+              />
+          </div>
+      </div>
+
+      <div style={{ display: 'flex', flexDirection: 'column', width: '300px', marginTop: '20px' }}>
+          <div style={{ color: 'black', marginBottom: '10px' }}>Tagline</div>
+          <div style={{ background: '#d8ebf0' }}>
+              <TextField
+                  name="mentorTagline"
+                  value={mentor.mentorTagline}
+                  onChange={(e) => handleTextFieldsChange(e)}
+                  id="filled-multiline-flexible"
+                  label="Multiline"
+                  multiline
+                  maxRows={4}
+                  style={{ width: '100%' }}
+                  variant="filled"
+              />
+          </div>
+      </div>
+  </div>
+      
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            {/* <div style={{
             display:'flex',
             flexDirection:'row',
             
@@ -253,405 +465,24 @@ const MentorProfile = () => {
                 fontSize:'15px',
                 fontFamily:'DM Sans',
                
-            }}>
-             <div style={{
-                display:'flex',
-                flexDirection:'row'
-            }}>
-
+            }}> */}
+           
             
 
-            <div style={{
-                display:'flex',
-                flexDirection:'column',
-                
+           <div  style={{
+                width: '70%',  // Set the width to half of the screen
+                margin: '0 auto',  // Center the div horizontally
+                backgroundColor: 'white',  // Example background color
+                padding: '20px',  // Add padding for better visibility
+                boxSizing: 'border-box',  // Include padding in the width calculation
             }}>
-                <div style={{
-                    color:'black'
-                }}>
-                     Name
-                </div>
-
-                <div style={{
-                    background:'#d8ebf0'
-                }}>
-                    <TextField
-                        name="mentorName"
-                        value={mentor.mentorName}
-                        onChange={(e) => {
-                            handleTextFieldsChange(e)
-                        }}
-                        id="filled-multiline-flexible"
-                        label="Multiline"
-                        multiline
-                        maxRows={4}
-                        style={{width:300}}
-                        variant="filled"
-                        />
-                </div>
-            </div>
-            <div style={{
-                display:'flex',
-                flexDirection:'column',  
-                marginLeft:'20px'
-            }}>
-                <div style={{
-                    color:'black'
-                }}>
-                     Email
-                </div>
-
-                <div style={{
-                    background:'#d8ebf0'
-                }}>
-                    <TextField
-                        name="mentorEmail"
-                        value={mentor.mentorEmail}
-                        onChange={(e) => {
-                            handleTextFieldsChange(e)
-                        }}
-                        id="filled-multiline-flexible"
-                        label="Multiline"
-                        multiline
-                        maxRows={4}
-                        style={{width:300}}
-                        variant="filled"
-                        />
-                </div>
-            </div>
-            <div style={{
-                display:'flex',
-                flexDirection:'column',  
-                marginLeft:'20px'
-            }}>
-                <div style={{
-                    color:'black'
-                }}>
-                     Add a profile picture 
-                </div>
-
-                <div style={{
-                    display:'flex',
-                    flexDirection:'row'
-                }}>
-
-                
-                <div style={{
-                    background:'black',
-                    borderRadius:'30px',
-                    width:'fit-content',
-                    height:'fit-content',
-                    padding:'5px 5px 1px 3px',
-                    cursor:'pointer'
-                }}>
-                <FormControl>
-                    <label htmlFor="fileInput">
-                        <CameraAltIcon style={{
-                            color: '#00ecff',
-                            fontSize:'40px',
-                            margin:0
-                        }}/>
-                            <input type="file"
-                                id="fileInput"
-                                
-                                style={{
-                                    display:'none'
-                                }}
-                                onChange={(e) => setImageFile(e.target.files[0])}
-                                >
-                                
-                                </input>
-                    </label>
-
-                </FormControl>
-                    
-                    
-                </div>
-                <div style={{
-                    
-                    borderRadius:'50px',
-                    
-                    background:'#cda8ff',
-                    padding:'1px'
-                }}>
-                    <img src={mentor.mentorImage && mentor.mentorImage !== ""?mentor.mentorImage:'https://e7.pngegg.com/pngimages/178/595/png-clipart-user-profile-computer-icons-login-user-avatars-monochrome-black.png'}alt="Mentor Image" style={{
-                    width:'100%',
-                    height:'100%',
-                    borderRadius:'50px',
-                    height:'100px',
-                    width:'100px',
-                    objectFit:'cover'
-                    // display: 'block',     
-                    // width: '100%',
-                    // minWidth: '100%',
-                    // height: '100%',
-                    // minHeight: '100%',
-                    // borderWidth: '0px',
-                    // outline: 'none' ,
-                    // borderRadius:'10px'
-            }} />
-                </div>
-                </div>
-            </div>
-
-            </div>
-            <div style={{
-                display:'flex',
-                flexDirection:'row',
-                marginTop:'10px'
-            }}>
-
-            
-
-            <div style={{
-                display:'flex',
-                flexDirection:'column',  
-            }}>
-                <div style={{
-                    color:'black'
-                }}>
-                     Contact
-                </div>
-
-                <div style={{
-                    background:'#d8ebf0'
-                }}>
-                    <TextField
-                        name="mentorContact"
-                        value={mentor.mentorContact}
-                        onChange={(e) => {
-                            handleTextFieldsChange(e)
-                        }}
-                        id="filled-multiline-flexible"
-                        label="Multiline"
-                        multiline
-                        maxRows={4}
-                        style={{width:300}}
-                        variant="filled"
-                        />
-                </div>
-            </div>
-            <div style={{
-                display:'flex',
-                flexDirection:'column',  
-                marginLeft:'20px'
-            }}>
-                <div style={{
-                    color:'black'
-                }}>
-                    Tagline
-                </div>
-
-                <div style={{
-                    background:'#d8ebf0'
-                }}>
-                    <TextField
-                        name="mentorTagline"
-                        value={mentor.mentorTagline}
-                        onChange={(e) => {
-                            handleTextFieldsChange(e)
-                        }}
-                        id="filled-multiline-flexible"
-                        label="Multiline"
-                        multiline
-                        maxRows={4}
-                        style={{width:300}}
-                        variant="filled"
-                        />
-                </div>
-            </div>
-            </div>
-
-            <div style={{
-                display:'flex',
-                flexDirection:'row',
-                marginTop:'10px'
-            }}>
-
-                <div style={{
-                display:'flex',
-                flexDirection:'column',
-                marginTop:'15px',
-            }}>
-                <div style={{
-                    color:'black'
-                }}>
-                    Exams
-                </div>
-
-                <div style={{
-                    width:500,
-                }}>
-                <FormControl fullWidth>
-                    
-                    <NativeSelect
-                        onChange={(e) => {
-                            handleExamSelect(e)
-                        }}
-                        value={mentor.mentorExams[mentor.mentorExams.length-1]}
-                        defaultValue={30}
-                        inputProps={{
-                        name: 'age',
-                        id: 'uncontrolled-native',
-                        }}
-                    >
-                    {
-                        exams.map((exam) =>
-                        (
-                            <option  value={exam}>{exam}</option>
-                        ))
-                    
-                    }
-                        
-                    </NativeSelect>
-
-                </FormControl>
-                <div style={{
-                    display:'flex',
-                    flexDirection:'row',
-                    maxHeight:'50px',
-                    overflowY:'auto',
-                    flexWrap:'wrap'
-                }}>
-
-                        
-
-                {
-                    
-                    mentor.mentorExams.map((exam) =>
-                        (
-                        <div>
-                        <div  style={{
-                        background:'#27538b',
-                        color:'white',
-                        marginTop:'1px',
-                        borderRadius:'20px',
-                        width:'fit-content',
-                        padding:'5px',
-                        display:'flex',
-                        flexDirection:'row'
-                    }}>
-                            <div>
-                                {exam}
-                            </div>
-                            <div>
-                            <CloseIcon  onClick={() => {handleDeleteExam(exam)}} style={{
-                                cursor:'pointer'
-                            }}/>
-                            </div>
-                            </div>
-                        </div>
-                        ))
-                }
-                    
-                        
-                   
-                </div>
-                </div>
-            </div>
-            <div style={{
-                display:'flex',
-                flexDirection:'column',
-                marginTop:'15px',
-                marginLeft:'20px'
-            }}>
-                <div style={{
-                    color:'black'
-                }}>
-                    Subjects
-                </div>
-
-                <div style={{
-                    width:500,
-                }}>
-                <FormControl fullWidth>
-                    
-                    <NativeSelect
-                        onChange={(e) => {
-                            handleSubjectSelect(e)
-                        }}
-                        value={mentor.mentorSubjects[mentor.mentorSubjects.length-1]}
-                        defaultValue={30}
-                        inputProps={{
-                        name: 'age',
-                        id: 'uncontrolled-native',
-                        }}
-                    >
-                    {
-                        subjects.map((subject) =>
-                        (
-                            <option  value={subject}>{subject}</option>
-                        ))
-                    
-                    }
-                        
-                    </NativeSelect>
-
-                </FormControl>
-                <div style={{
-                    display:'flex',
-                    flexDirection:'row',
-                    maxHeight:'50px',
-                    overflowY:'auto',
-                    flexWrap:'wrap'
-                }}>
-
-                        
-
-                {
-                    
-                    mentor.mentorSubjects.map((subject) =>
-                        (
-                        <div>
-                        <div  style={{
-                        background:'#27538b',
-                        marginTop:'1px',
-                        color:'white',
-                        borderRadius:'20px',
-                        width:'fit-content',
-                        padding:'5px',
-                        display:'flex',
-                        flexDirection:'row'
-                    }}>
-                            <div>
-                                {subject}
-                            </div>
-                            <div>
-                            <CloseIcon  onClick={() => {handleDeleteSubject(subject)}} style={{
-                                cursor:'pointer'
-                            }}/>
-                            </div>
-                            </div>
-                        </div>
-                        ))
-                }
-                    
-                        
-                   
-                </div>
-                </div>
-            </div>
-            
-
-            </div>
-            <div style={{
-                    fontSize:'16px',
-                    fontFamily:'DM Sans',
-                    marginTop:'10px',
-                    backgroundColor:'#142683',
-                    borderRadius:'5px',
-                    fontWeight:400,
-                    cursor:'pointer',
-                    padding: '4px 4px 8px 4px',
-                    color:'white',
-                    width:'fit-content'
-                }}
-                onClick={()=>{updateProfile()}}
-                >Save Changes</div>
-
-                <Box style = {{
-                width:'100%',
-                marginTop:'20px'
+       
+                <Box style={{
+                width: '100%',  // Set the width to half of the screen
+                margin: '0 auto',  // Center the div horizontally
+                backgroundColor: 'lightgray',  // Example background color
+                padding: '20px',  // Add padding for better visibility
+                boxSizing: 'border-box',  // Include padding in the width calculation
             }}>
                 <Box sx={{ borderBottom: 1, borderColor: 'divider',bgcolor:'#2e1534' }}>
                         <StyledTabs value={value} onChange={handleChange} aria-label="ant example">
@@ -661,6 +492,8 @@ const MentorProfile = () => {
                         <StyledTab  label="Reviews" {...a11yProps(3)} />
                         <StyledTab  label="Statistics" {...a11yProps(4)} />
                         <StyledTab  label="Plans" {...a11yProps(5)} />
+                        <StyledTab  label="Exams" {...a11yProps(6)} />
+                        <StyledTab  label="Subjects" {...a11yProps(7)} />
                         </StyledTabs>
                 </Box>
                 <CustomTabPanel value={value} index={0}>
@@ -705,12 +538,182 @@ const MentorProfile = () => {
                         onUpdate={(state) => {setMentor(state)}}
                     />
                 </CustomTabPanel>
-            </Box>
+
+                <CustomTabPanel value={value} index={6}>
+          <div style={{ display: "flex", flexDirection: "row" }}>
+            <div style={{ width: "50%" }}>
+              <FormControl fullWidth>
+                <TextField
+                  label="Search Exams"
+                  value={searchExam}
+                  onChange={(e) => setSearchExam(e.target.value)}
+                />
+              </FormControl>
+              <div style={{ maxHeight: "150px", overflowY: "auto", flexWrap: "wrap" }}>
+                {filteredExams.map((exam) => (
+                  <div key={exam}>
+                    <div
+                      onClick={() => handleSelectExam(exam)}
+                      style={{
+                        background: "#27538b",
+                        color: "white",
+                        marginTop: "1px",
+                        borderRadius: "20px",
+                        width: "fit-content",
+                        padding: "5px",
+                        display: "flex",
+                        flexDirection: "row",
+                        cursor: "pointer",
+                      }}
+                    >
+                      <div>{exam}</div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+            <div style={{ width: "50%" }}>
+              <FormControl fullWidth>
+                <TextField label="Selected Exams" disabled />
+              </FormControl>
+              <div style={{ maxHeight: "150px", overflowY: "auto", flexWrap: "wrap" }}>
+                {selectedExams.map((exam) => (
+                  <div key={exam}>
+                    <div
+                      onClick={() => handleDeselectExam(exam)}
+                      style={{
+                        background: "#2bedbc",
+                        color: "black",
+                        marginTop: "1px",
+                        borderRadius: "20px",
+                        width: "fit-content",
+                        padding: "5px",
+                        display: "flex",
+                        flexDirection: "row",
+                        cursor: "pointer",
+                      }}
+                    >
+                      <div>{exam}</div>
+                      <div>
+                        <CloseIcon />
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </CustomTabPanel>
+
+        <CustomTabPanel value={value} index={7}>
+  <div style={{ display: "flex", flexDirection: "row" }}>
+    <div style={{ width: "50%" }}>
+      <FormControl fullWidth>
+        <TextField
+          label="Search Subjects"
+          value={searchSubject}
+          onChange={(e) => setSearchSubject(e.target.value)}
+        />
+      </FormControl>
+      <div style={{ maxHeight: "150px", overflowY: "auto", flexWrap: "wrap" }}>
+        {filteredSubjects.map((subject) => (
+          <div key={subject}>
+            <div
+              onClick={() => handleSelectSubject(subject)}
+              style={{
+                background: "#27538b",
+                color: "white",
+                marginTop: "1px",
+                borderRadius: "20px",
+                width: "fit-content",
+                padding: "5px",
+                display: "flex",
+                flexDirection: "row",
+                cursor: "pointer",
+              }}
+            >
+              <div>{subject}</div>
+            </div>
+          </div>
+        ))}
+      </div>
     </div>
+    <div style={{ width: "50%" }}>
+      <FormControl fullWidth>
+        <TextField label="Selected Subjects" disabled />
+      </FormControl>
+      <div style={{ maxHeight: "150px", overflowY: "auto", flexWrap: "wrap" }}>
+        {selectedSubjects.map((subject) => (
+          <div key={subject}>
+            <div
+              onClick={() => handleDeselectSubject(subject)}
+              style={{
+                background: "#2bedbc",
+                color: "black",
+                marginTop: "1px",
+                borderRadius: "20px",
+                width: "fit-content",
+                padding: "5px",
+                display: "flex",
+                flexDirection: "row",
+                cursor: "pointer",
+              }}
+            >
+              <div>{subject}</div>
+              <div>
+                <CloseIcon />
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </div>
+</CustomTabPanel>
+
+
+
+            </Box>
+    {/* </div>
     
             </div>
+            </div> */}
             </div>
+
+          
+
+            <div
+            style={{
+              position: 'fixed',  // Set the position to fixed
+              top: '20px',  // Adjust the top position as needed
+              right: '5px',  // 
+                width: '15%',  // Set the width to 30% of the screen
+                height: '100vh',  // Set the height to 100% of the viewport height
+                float: 'right',  // Align the div to the right
+                backgroundColor: 'lightgray',  // Example background color
+                boxSizing: 'border-box',  // Include padding in the width calculation
+                
+            }}
+        >
+            <img
+                src="https://static.vecteezy.com/system/resources/previews/000/380/945/original/edit-profile-vector-icon.jpg" // Replace with the URL of your image
+                alt="Your Image"
+                style={{
+     
+                    width: '100%',  // Make the image occupy 100% of the container width
+                    height: '100%',  // Make the image occupy 100% of the container height
+                    objectFit: 'cover',  // Maintain aspect ratio and cover the container
+                }}
+            />
+        </div>
         </>
     )
 }
+
+
+
+
+
+
+
 export default MentorProfile
