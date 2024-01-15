@@ -11,7 +11,6 @@ const app = express();
 app.use('/payment/post/update', express.raw({ type: 'application/json' }));
 app.use(bodyParser.json({extended:true}))
 app.use(bodyParser.urlencoded({extended:true}))
-app.use(cors());
 app.use(cors({
   origin: 'https://my-guru.vercel.app',
       methods: ['GET', 'POST', 'DELETE'],
@@ -19,7 +18,7 @@ app.use(cors({
 app.get('/', (req, res) => {
   res.send('hello')
 })
-
+app.use('/',Router);
 
 
 
