@@ -93,6 +93,7 @@ const StudentChats = () => {
 
       myFunction()
     }, [])
+    
     socket.on('receive',(obj)=>{
         console.log(messages.length)
         let tempArray = []
@@ -105,7 +106,11 @@ const StudentChats = () => {
         tempArray.reverse();
         setMessages(tempArray);
         })
-
+        useEffect(() => {
+            return () => {
+              socket.disconnect()
+            };
+          }, []);
     useEffect(() => {
         const storeImageAndGetLink = async() => {
           

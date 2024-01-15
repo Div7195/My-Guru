@@ -15,9 +15,9 @@ app.use(cors({
   origin: ['https://my-guru.vercel.app','http://localhost:3000'],
       methods: ['GET', 'POST', 'DELETE'],
 }));
-app.get('/', (req, res) => {
-  res.send('hello')
-})
+// app.get('/', (req, res) => {
+//   res.send('hello')
+// })
 app.use('/',Router);
 
 
