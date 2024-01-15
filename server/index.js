@@ -12,7 +12,7 @@ app.use('/payment/post/update', express.raw({ type: 'application/json' }));
 app.use(bodyParser.json({extended:true}))
 app.use(bodyParser.urlencoded({extended:true}))
 app.use(cors({
-  origin: 'https://my-guru.vercel.app',
+  origin: ['https://my-guru.vercel.app','http://localhost:3000'],
       methods: ['GET', 'POST', 'DELETE'],
 }));
 app.get('/', (req, res) => {
@@ -28,7 +28,7 @@ const PASSWORD = process.env.DB_PASSWORD;
 const server = app.listen(PORT, () => console.log(`server is running on port ${PORT}`));
 const io = new Server(server, {
     cors: {
-      origin: 'https://my-guru.vercel.app',
+      origin: ['https://my-guru.vercel.app','http://localhost:3000'],
       methods: ['GET', 'POST', 'DELETE'],
     },
   });
