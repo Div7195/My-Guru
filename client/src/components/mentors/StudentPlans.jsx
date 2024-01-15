@@ -16,7 +16,7 @@ const StudentPlans = () => {
 
     useEffect(() => {
         const myFunction = async() => {
-            const url = `http://localhost:8000/getYourPlans?studentAccountId=${account.id}`;
+            const url = `https://my-guru-server.vercel.app/getYourPlans?studentAccountId=${account.id}`;
                 const settings = {
                 method: 'GET',
                 headers: {

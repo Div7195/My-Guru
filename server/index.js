@@ -13,11 +13,11 @@ app.use(bodyParser.json({extended:true}))
 app.use(bodyParser.urlencoded({extended:true}))
 app.use(cors());
 app.use(cors({
-  origin: 'http://localhost:3000',
-      methods: ['GET', 'POST'],
+  origin: 'https://my-guru.vercel.app',
+      methods: ['GET', 'POST', 'DELETE'],
 }));
 app.get('/', (req, res) => {
-  res.send('hellp')
+  res.send('hello')
 })
 
 
@@ -29,8 +29,8 @@ const PASSWORD = process.env.DB_PASSWORD;
 const server = app.listen(PORT, () => console.log(`Server is running on port ${PORT}`));
 const io = new Server(server, {
     cors: {
-      origin: 'http://localhost:3000',
-      methods: ['GET', 'POST'],
+      origin: 'https://my-guru.vercel.app',
+      methods: ['GET', 'POST', 'DELETE'],
     },
   });
 

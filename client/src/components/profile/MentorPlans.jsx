@@ -97,7 +97,7 @@ const addNewPlanApi = async(field)=> {
         }
         try {
             console.log(settings.body)
-            const fetchResponse = await fetch(`http://localhost:8000/updateMentorProfile?mentorAccountId=${account.id}`, settings);
+            const fetchResponse = await fetch(`https://my-guru-server.vercel.app/updateMentorProfile?mentorAccountId=${account.id}`, settings);
             const response = await fetchResponse.json();
             setTempPlan(planObjInitial)
             onUpdate(response)
@@ -129,7 +129,7 @@ const editPlanApi = async(field, id) => {
         }
         try {
            
-            const fetchResponse = await fetch(`http://localhost:8000/updateMentorProfile?mentorAccountId=${account.id}`, settings);
+            const fetchResponse = await fetch(`https://my-guru-server.vercel.app/updateMentorProfile?mentorAccountId=${account.id}`, settings);
             const response = await fetchResponse.json();
             setTempPlan(planObjInitial)
             onUpdate(response)
@@ -154,7 +154,7 @@ const makePaymentApi = async(planId, studentAccountId, mentorAccountId) => {
         }
         try {
            
-            const fetchResponse = await fetch(`http://localhost:8000/create-checkout-session?planId=${planId}&studentAccountId=${studentAccountId}&mentorAccountId=${mentorAccountId}`, settings);
+            const fetchResponse = await fetch(`https://my-guru-server.vercel.app/create-checkout-session?planId=${planId}&studentAccountId=${studentAccountId}&mentorAccountId=${mentorAccountId}`, settings);
             const response = await fetchResponse.json();
             
             if(response.msg === 'payment not allowed'){

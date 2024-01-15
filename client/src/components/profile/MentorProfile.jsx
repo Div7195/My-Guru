@@ -276,7 +276,7 @@ const MentorProfile = () => {
          }
          try {
              console.log(settings.body)
-             const fetchResponse = await fetch(`http://localhost:8000/updateMentorProfile?mentorAccountId=${account.id}`, settings);
+             const fetchResponse = await fetch(`https://my-guru-server.vercel.app/updateMentorProfile?mentorAccountId=${account.id}`, settings);
              const response = await fetchResponse.json();
             
              
@@ -289,7 +289,7 @@ const MentorProfile = () => {
 
     useEffect(() => {
         const myFunction = async() => {
-          const url = `http://localhost:8000/getMentorProfile?mentorAccountId=${account.id}`;
+          const url = `https://my-guru-server.vercel.app/getMentorProfile?mentorAccountId=${account.id}`;
           const settings = {
           method: 'GET',
           headers: {
@@ -326,7 +326,7 @@ const MentorProfile = () => {
                   
                   }
                   try {
-                      const fetchResponse = await fetch(`http://localhost:8000/image/upload`, settings);
+                      const fetchResponse = await fetch(`https://my-guru-server.vercel.app/image/upload`, settings);
                       const response = await fetchResponse.json();
                       setMentor({...mentor, mentorImage:response});
                       

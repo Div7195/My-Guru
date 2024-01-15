@@ -69,7 +69,7 @@ const StudentProfile = () => {
          }
          try {
              console.log(settings.body)
-             const fetchResponse = await fetch(`http://localhost:8000/updateStudentProfile?studentAccountId=${account.id}`, settings);
+             const fetchResponse = await fetch(`https://my-guru-server.vercel.app/updateStudentProfile?studentAccountId=${account.id}`, settings);
              const response = await fetchResponse.json();
             
              
@@ -80,7 +80,7 @@ const StudentProfile = () => {
     }
     useEffect(() => {
         const myFunction = async() => {
-          const url = `http://localhost:8000/getStudentProfile?studentAccountId=${account.id}`;
+          const url = `https://my-guru-server.vercel.app/getStudentProfile?studentAccountId=${account.id}`;
           const settings = {
           method: 'GET',
           headers: {

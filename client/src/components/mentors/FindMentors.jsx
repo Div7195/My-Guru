@@ -54,7 +54,7 @@ const FindMentors = () => {
         console.log(filter)
     }
     const applySearch = async() => {
-        const url = `http://localhost:8000/getMentors?userAccountId=${account.id}&userRole=${account.role}&queryExams=${filter.queryExams}&querySubjects=${filter.querySubjects}&searchQuery=${filter.searchQuery}&sortBy=${filter.sortBy}`;
+        const url = `https://my-guru-server.vercel.app/getMentors?userAccountId=${account.id}&userRole=${account.role}&queryExams=${filter.queryExams}&querySubjects=${filter.querySubjects}&searchQuery=${filter.searchQuery}&sortBy=${filter.sortBy}`;
             const settings = {
             method: 'GET',
             headers: {
@@ -75,7 +75,7 @@ const FindMentors = () => {
 }
     useEffect(() => {
       const myFunction = async() => {
-        const url = `http://localhost:8000/getMentors?userAccountId=${account.id}&userRole=${account.role}&queryExams=${filter.queryExams}&querySubjects=${filter.querySubjects}&searchQuery=${filter.searchQuery}&sortBy=${filter.sortBy}`;
+        const url = `https://my-guru-server.vercel.app/getMentors?userAccountId=${account.id}&userRole=${account.role}&queryExams=${filter.queryExams}&querySubjects=${filter.querySubjects}&searchQuery=${filter.searchQuery}&sortBy=${filter.sortBy}`;
             const settings = {
             method: 'GET',
             headers: {

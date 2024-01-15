@@ -10,7 +10,7 @@ const StudentForYou = () => {
     const [posts, setPosts] = useState([])
     useEffect(() => {
         const myFunction = async() => {
-            const url = `http://localhost:8000/getForYouPosts?studentAccountId=${account.id}`;
+            const url = `https://my-guru-server.vercel.app/getForYouPosts?studentAccountId=${account.id}`;
             const settings = {
             method: 'GET',
             headers: {

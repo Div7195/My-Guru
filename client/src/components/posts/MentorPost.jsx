@@ -126,7 +126,7 @@ const handleDeleteSubject = (exam) => {
      }
      try {
          console.log(settings.body)
-         const fetchResponse = await fetch(`http://localhost:8000/updatepost?postId=${postId}`, settings);
+         const fetchResponse = await fetch(`https://my-guru-server.vercel.app/updatepost?postId=${postId}`, settings);
          const response = await fetchResponse.json();
          setPost(tempPostState)
          handleClose()
@@ -151,7 +151,7 @@ const handleDeleteSubject = (exam) => {
         }
         try {
             console.log(settings.body)
-            const fetchResponse = await fetch(`http://localhost:8000/addComment?postId=${postId}&role=${account.role}`, settings);
+            const fetchResponse = await fetch(`https://my-guru-server.vercel.app/addComment?postId=${postId}&role=${account.role}`, settings);
             const response = await fetchResponse.json();
             setPost({...postState, postComments:[...postState.postComments, response]})
             getCommentsApiSecond(response)
@@ -164,7 +164,7 @@ const getCommentsApiSecond = async(commentId) => {
     let tempList = postState.postComments
     tempList.push(commentId)
     
-    const url = `http://localhost:8000/getComments?postComments=${tempList}`;
+    const url = `https://my-guru-server.vercel.app/getComments?postComments=${tempList}`;
     const settings = {
     method: 'GET',
     headers: {
@@ -182,7 +182,7 @@ const getCommentsApiSecond = async(commentId) => {
         }
 }
 const getCommentsApi = async() => {
-    const url = `http://localhost:8000/getComments?postComments=${postState.postComments}`;
+    const url = `https://my-guru-server.vercel.app/getComments?postComments=${postState.postComments}`;
     const settings = {
     method: 'GET',
     headers: {
@@ -200,7 +200,7 @@ const getCommentsApi = async() => {
         }
 }
 const getLikesApi = async() => {
-    const url = `http://localhost:8000/getLikes?postLikes=${postState.postLikes}`;
+    const url = `https://my-guru-server.vercel.app/getLikes?postLikes=${postState.postLikes}`;
     const settings = {
     method: 'GET',
     headers: {
@@ -228,7 +228,7 @@ const addLikeApi = async(postId)=> {
         }
         try {
             console.log(settings.body)
-            const fetchResponse = await fetch(`http://localhost:8000/addLike?postId=${postId}&likeUserId=${account.id}&role=${account.role}`, settings);
+            const fetchResponse = await fetch(`https://my-guru-server.vercel.app/addLike?postId=${postId}&likeUserId=${account.id}&role=${account.role}`, settings);
             const response = await fetchResponse.json();
             setPost({...postState, postLikes:[...postState.postLikes, account.id]})
             
@@ -248,7 +248,7 @@ const removeLikeApi = async(postId)=> {
         }
         try {
             console.log(settings.body)
-            const fetchResponse = await fetch(`http://localhost:8000/removeLike?postId=${postId}&likeUserId=${account.id}&role=${account.role}`, settings);
+            const fetchResponse = await fetch(`https://my-guru-server.vercel.app/removeLike?postId=${postId}&likeUserId=${account.id}&role=${account.role}`, settings);
             const response = await fetchResponse.json();
             setPost({...postState, postLikes:postState.postLikes.filter((e) => {
                 if(e !== account.id) return e
@@ -269,7 +269,7 @@ const repostApi = async(postId)=> {
         }
         try {
             console.log(settings.body)
-            const fetchResponse = await fetch(`http://localhost:8000/repost?postId=${postId}&mentorAccountId=${account.id}&role=${account.role}`, settings);
+            const fetchResponse = await fetch(`https://my-guru-server.vercel.app/repost?postId=${postId}&mentorAccountId=${account.id}&role=${account.role}`, settings);
             const response = await fetchResponse.json();
             setPost({...postState, postReposts:[...postState.postReposts, response]})
            
@@ -278,7 +278,7 @@ const repostApi = async(postId)=> {
         }    
 }
 const deletePost = async(postId) => {
-    const url = `http://localhost:8000/deletePost?jobId=${postId}&mentorAccountId=${account.id}`;
+    const url = `https://my-guru-server.vercel.app/deletePost?jobId=${postId}&mentorAccountId=${account.id}`;
     const settings = {
     method: 'DELETE',
     headers: {
@@ -307,7 +307,7 @@ const deletePost = async(postId) => {
             }
             try {
                 console.log(settings.body)
-                const fetchResponse = await fetch(`http://localhost:8000/bookmarkPost?postId=${postId}&userAccountId=${account.id}&userRole=${account.role}`, settings);
+                const fetchResponse = await fetch(`https://my-guru-server.vercel.app/bookmarkPost?postId=${postId}&userAccountId=${account.id}&userRole=${account.role}`, settings);
                 const response = await fetchResponse.json();
                 setPost({...postState, postBookmarks:[...postState.postBookmarks, account.id]})
                
@@ -327,7 +327,7 @@ const deletePost = async(postId) => {
             }
             try {
                 console.log(settings.body)
-                const fetchResponse = await fetch(`http://localhost:8000/removeBookmarkPost?postId=${postId}&userAccountId=${account.id}&userRole=${account.role}`, settings);
+                const fetchResponse = await fetch(`https://my-guru-server.vercel.app/removeBookmarkPost?postId=${postId}&userAccountId=${account.id}&userRole=${account.role}`, settings);
                 const response = await fetchResponse.json();
                 setPost({...postState, postBookmarks:postState.postBookmarks.filter((e) => {
                     return e !== account.id
@@ -361,7 +361,7 @@ const deletePost = async(postId) => {
               
               }
               try {
-                  const fetchResponse = await fetch(`http://localhost:8000/image/upload`, settings);
+                  const fetchResponse = await fetch(`https://my-guru-server.vercel.app/image/upload`, settings);
                   const response = await fetchResponse.json();
                   setTempPost({...tempPostState, postImage:response});
                   

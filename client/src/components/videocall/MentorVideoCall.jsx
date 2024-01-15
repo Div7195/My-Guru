@@ -19,7 +19,7 @@ const MentorVideoCall = () => {
       
 
       const myFunction = async() => {
-          const url = `http://localhost:8000/getMentorProfile?mentorAccountId=${account.id}`;
+          const url = `https://my-guru-server.vercel.app/getMentorProfile?mentorAccountId=${account.id}`;
           const settings = {
           method: 'GET',
           headers: {

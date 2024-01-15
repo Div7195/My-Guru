@@ -47,7 +47,7 @@ const StudentChats = () => {
          }
          try {
              console.log(settings.body)
-             const fetchResponse = await fetch(`http://localhost:8000/updateChatMessages?chatId=${chatId}`, settings);
+             const fetchResponse = await fetch(`https://my-guru-server.vercel.app/updateChatMessages?chatId=${chatId}`, settings);
              const response = await fetchResponse.json();
             if(response.msg.includes('success')){
                 
@@ -74,7 +74,7 @@ const StudentChats = () => {
 
     useEffect(() => {
       const myFunction = async() => {
-        const url = `http://localhost:8000/getChatMessages?chatId=${chatId}&role=${account.role}`;
+        const url = `https://my-guru-server.vercel.app/getChatMessages?chatId=${chatId}&role=${account.role}`;
                 const settings = {
                 method: 'GET',
                 headers: {
@@ -128,7 +128,7 @@ const StudentChats = () => {
                   
                   }
                   try {
-                      const fetchResponse = await fetch(`http://localhost:8000/uploadImageMessage?chatId=${chatId}&role=${account.role}&senderAccountId=${account.id}`, settings);
+                      const fetchResponse = await fetch(`https://my-guru-server.vercel.app/uploadImageMessage?chatId=${chatId}&role=${account.role}&senderAccountId=${account.id}`, settings);
                       const response = await fetchResponse.json();
                       socket.emit('send', {
                         msg:response.data

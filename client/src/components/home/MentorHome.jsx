@@ -101,7 +101,7 @@ const handleDeleteSubject = (exam) => {
         }
         try {
             console.log(settings.body)
-            const fetchResponse = await fetch(`http://localhost:8000/createPost?mentorAccountId=${account.id}`, settings);
+            const fetchResponse = await fetch(`https://my-guru-server.vercel.app/createPost?mentorAccountId=${account.id}`, settings);
             const response = await fetchResponse.json();
             setPost(postInitialValues)
             handleClose()
@@ -128,7 +128,7 @@ const handleDeleteSubject = (exam) => {
                 
                 }
                 try {
-                    const fetchResponse = await fetch(`http://localhost:8000/image/upload`, settings);
+                    const fetchResponse = await fetch(`https://my-guru-server.vercel.app/image/upload`, settings);
                     const response = await fetchResponse.json();
                     setPost({...postState, postImage:response});
                     
@@ -142,7 +142,7 @@ const handleDeleteSubject = (exam) => {
     }, [imageFile])
     useEffect(() => {
         const myFunction = async() => {
-        const url = `http://localhost:8000/getAllPostsExcept?mentorAccountId=${account.id}`;
+        const url = `https://my-guru-server.vercel.app/getAllPostsExcept?mentorAccountId=${account.id}`;
         const settings = {
         method: 'GET',
         headers: {

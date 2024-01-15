@@ -11,7 +11,7 @@ const MentorPosts = () => {
     const [posts, setPosts] = useState({})
     useEffect(() => {
         const myFunction = async() => {
-        const url = `http://localhost:8000/getPosts?mentorAccountId=${account.id}`;
+        const url = `https://my-guru-server.vercel.app/getPosts?mentorAccountId=${account.id}`;
         const settings = {
         method: 'GET',
         headers: {

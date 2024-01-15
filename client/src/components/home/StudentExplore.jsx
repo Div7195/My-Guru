@@ -68,7 +68,7 @@ const StudentExplore = () => {
     }
 
     const applySearch = async() => {
-        const url = `http://localhost:8000/getExploredPosts?userAccountId=${account.id}&userRole=${account.role}&queryExams=${filter.queryExams}&querySubjects=${filter.querySubjects}&searchQuery=${filter.searchQuery}`;
+        const url = `https://my-guru-server.vercel.app/getExploredPosts?userAccountId=${account.id}&userRole=${account.role}&queryExams=${filter.queryExams}&querySubjects=${filter.querySubjects}&searchQuery=${filter.searchQuery}`;
             const settings = {
             method: 'GET',
             headers: {
@@ -90,7 +90,7 @@ const StudentExplore = () => {
     
     useEffect(() => {
         const myFunction = async() => {
-            const url = `http://localhost:8000/getExploredPosts?userAccountId=${account.id}&userRole=${account.role}&queryExams=${filter.queryExams}&querySubjects=${filter.querySubjects}&searchQuery=${filter.searchQuery}`;
+            const url = `https://my-guru-server.vercel.app/getExploredPosts?userAccountId=${account.id}&userRole=${account.role}&queryExams=${filter.queryExams}&querySubjects=${filter.querySubjects}&searchQuery=${filter.searchQuery}`;
             const settings = {
             method: 'GET',
             headers: {

@@ -84,7 +84,7 @@ const addNewEducationApi = async(field)=> {
         }
         try {
             console.log(settings.body)
-            const fetchResponse = await fetch(`http://localhost:8000/updateMentorProfile?mentorAccountId=${account.id}`, settings);
+            const fetchResponse = await fetch(`https://my-guru-server.vercel.app/updateMentorProfile?mentorAccountId=${account.id}`, settings);
             const response = await fetchResponse.json();
             setTempEducation(educationObjInitial)
             onUpdate(response)
@@ -116,7 +116,7 @@ const editEducationApi = async(field, id) => {
         }
         try {
            
-            const fetchResponse = await fetch(`http://localhost:8000/updateMentorProfile?mentorAccountId=${account.id}`, settings);
+            const fetchResponse = await fetch(`https://my-guru-server.vercel.app/updateMentorProfile?mentorAccountId=${account.id}`, settings);
             const response = await fetchResponse.json();
             setTempEducation(educationObjInitial)
             onUpdate(response)

@@ -94,7 +94,7 @@ const [mentor, setMentor] = useState(mentorObjInitial)
 useEffect(() => {
   const myFunction = async() => {
 
-    const url = `http://localhost:8000/getMentorProfile?mentorAccountId=${mentorAccountId && mentorAccountId.length > 0 ?mentorAccountId:account.id}`;
+    const url = `https://my-guru-server.vercel.app/getMentorProfile?mentorAccountId=${mentorAccountId && mentorAccountId.length > 0 ?mentorAccountId:account.id}`;
     const settings = {
     method: 'GET',
     headers: {

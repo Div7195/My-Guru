@@ -14,7 +14,7 @@ const MentorPlansList = () => {
 
     useEffect(() => {
         const myFunction = async() => {
-            const url = `http://localhost:8000/getMentorPlans?mentorAccountId=${account.id}`;
+            const url = `https://my-guru-server.vercel.app/getMentorPlans?mentorAccountId=${account.id}`;
                 const settings = {
                 method: 'GET',
                 headers: {

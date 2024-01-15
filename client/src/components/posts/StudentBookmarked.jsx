@@ -11,7 +11,7 @@ const StudentBookmarked = () => {
     const [posts, setPosts] = useState({})
     useEffect(() => {
         const myFunction = async() => {
-        const url = `http://localhost:8000/getBookmarkedPosts?userAccountId=${account.id}&userRole=${account.role}`;
+        const url = `https://my-guru-server.vercel.app/getBookmarkedPosts?userAccountId=${account.id}&userRole=${account.role}`;
         const settings = {
         method: 'GET',
         headers: {
