@@ -26,7 +26,7 @@ app.get('/', (req, res) => {
 const PORT = process.env.PORT || 8000;
 const USERNAME = process.env.DB_USERNAME;
 const PASSWORD = process.env.DB_PASSWORD;
-const server = app.listen(PORT, () => console.log(`Server is running on port ${PORT}`));
+const server = app.listen(PORT, () => console.log(`server is running on port ${PORT}`));
 const io = new Server(server, {
     cors: {
       origin: 'https://my-guru.vercel.app',
