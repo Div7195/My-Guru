@@ -29,7 +29,7 @@ const server = app.listen(PORT, () => console.log(`server is running on port ${P
 const io = new Server(server, {
     cors: {
       origin: ['https://my-guru.vercel.app','http://localhost:3000'],
-      methods: ['GET', 'POST', 'DELETE'],
+      methods: ['GET', 'POST'],
     },
   });
 
