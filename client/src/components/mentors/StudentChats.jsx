@@ -6,7 +6,7 @@ import { getAccessToken } from "../../utils/util"
 import { TextField } from "@mui/material";
 import dayjs from "dayjs";
 import SendIcon from '@mui/icons-material/Send';
-import {socket} from '../../service/socket.js'
+// import {socket} from '../../service/socket.js'
 import AttachmentIcon from '@mui/icons-material/Attachment';
 import FormLabel from '@mui/material/FormLabel';
 import FormControl from '@mui/material/FormControl';
@@ -49,9 +49,9 @@ const StudentChats = () => {
              const response = await fetchResponse.json();
              
             if(response.msg.includes('success')){
-                socket.emit('send', {
-                    msg:newMessage,
-                })
+                // socket.emit('send', {
+                //     msg:newMessage,
+                // })
                 
                 
             }else{
@@ -85,7 +85,7 @@ const StudentChats = () => {
                     response.data.reverse()
                     setMessages(response.data);
                     setChattingWith(response.name)
-                    socket.emit('joinroom', chatId);
+                    // socket.emit('joinroom', chatId);
                     } catch (e) {
                     console.log(e);
                     }
@@ -94,23 +94,23 @@ const StudentChats = () => {
       myFunction()
     }, [])
     
-    socket.on('receive',(obj)=>{
-        console.log(messages.length)
-        let tempArray = []
-        for(let i = 0; i<messages.length;i++){
-            tempArray.push(messages[i])
-        }
+    // socket.on('receive',(obj)=>{
+    //     console.log(messages.length)
+    //     let tempArray = []
+    //     for(let i = 0; i<messages.length;i++){
+    //         tempArray.push(messages[i])
+    //     }
         
-        tempArray.reverse();
-        tempArray.push(obj.msg);
-        tempArray.reverse();
-        setMessages(tempArray);
-        })
-        useEffect(() => {
-            return () => {
-              socket.disconnect()
-            };
-          }, []);
+    //     tempArray.reverse();
+    //     tempArray.push(obj.msg);
+    //     tempArray.reverse();
+    //     setMessages(tempArray);
+    //     })
+    //     useEffect(() => {
+    //         return () => {
+    //           socket.disconnect()
+    //         };
+    //       }, []);
     useEffect(() => {
         const storeImageAndGetLink = async() => {
           
@@ -130,9 +130,9 @@ const StudentChats = () => {
                   try {
                       const fetchResponse = await fetch(`https://my-guru-server.vercel.app/uploadImageMessage?chatId=${chatId}&role=${account.role}&senderAccountId=${account.id}`, settings);
                       const response = await fetchResponse.json();
-                      socket.emit('send', {
-                        msg:response.data
-                    })
+                    //   socket.emit('send', {
+                    //     msg:response.data
+                    // })
                     
                       
                   } catch (e) {
