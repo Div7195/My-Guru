@@ -389,13 +389,11 @@ export const getYourPlansController = async(request, response) => {
             let mentor = await Mentor.findOne({mentorAccountId:studentSubscriptions[i].mentorAccountId})
             let plan = {}
             for(let j = 0;j<mentor.mentorPlans.length;j++){
-                console.log(studentSubscriptions)
                 if(mentor.mentorPlans[j]._id.toString() === studentSubscriptions[i].planId){
                     plan = mentor.mentorPlans[j]
                     break
                 }
             }
-            console.log(plan)
             result.push({
                 videoCalls:plan.videoCalls,
                 streams:plan.streams,
@@ -467,8 +465,6 @@ export const bookmarkPostController = async(request, response) => {
                    student = {...student._doc, studentSavedPosts:[...student._doc.studentSavedPosts, request.query.postId]}
                    
                    post = {...post._doc, postBookmarks:[...post._doc.postBookmarks, request.query.userAccountId]}
-                    console.log(student)
-                    console.log(post)
                     const options = { new: true };
                   let updatedStudent = await Student.findOneAndUpdate({studentAccountId:request.query.userAccountId}, student, options )
                   if (!updatedStudent) {
@@ -515,7 +511,6 @@ export const removeBookmarkController = async(request, response) => {
                     
                     return e !== request.query.postId
                   })}
-              console.log(student)
 
               post = {...post._doc, postBookmarks:post._doc.postBookmarks.filter((e) => {
                 return e !== request.query.userAccountId
@@ -800,7 +795,6 @@ export const paymentController = async(request, response) => {
                         break
                     }
                 }
-                console.log(plan)
                 if(plan !== null && planToShowToUser !== null && planId !== ''){
                     let customer = {}
                     if(student.payerId === '' || !student.payerId){

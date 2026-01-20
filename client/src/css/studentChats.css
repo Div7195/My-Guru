@@ -1,96 +1,109 @@
-.main-box{
+/* Container for the whole chat area */
+.main-container {
     display: flex;
-flex-basis: 70%;
-flex-direction: column;
-height: 600px;
-
+    flex-basis: 70%;
+    flex-direction: column;
+    height: 600px;
 }
-.chats-parent-box{
+
+/* Middle wrapper */
+.chats-container {
     display: flex;
-flex-direction: column;
-margin-bottom: 5px;
-margin-top: auto;
-
+    flex-direction: column;
+    margin-bottom: 5px;
+    margin-top: auto;
 }
-.chats-box{
+
+/* The scrollable area */
+.chats-main-container {
     display: flex;
-flex-direction: column-reverse;
-max-height: 580px;
-overflow-y: auto;
-
+    flex-direction: column-reverse;
+    max-height: 580px;
+    overflow-y: auto;
+    padding-right: 10px; /* Prevents scrollbar from covering text */
 }
-.msg-1{
+
+/* --- SENDER STYLES (Student - Right Side) --- */
+
+.msg-body {
+    margin-bottom: 10px;
+    margin-right: 0px;
+    margin-left: auto;    /* Pushes to right */
+    width: fit-content;   /* <--- FIX: Shrinks box to text size */
+    max-width: 60%;       /* Stops it from getting too wide */
+    
+    border-radius: 5px;
+    background: rgb(186, 201, 255);
+    padding: 10px;
+    font-family: 'DM Sans';
+    color: rgb(7, 10, 10);
+    word-wrap: break-word; /* Ensures long words wrap */
+}
+
+/* Image/Video Container (Sender) */
+.msg-1 {
     display: block;
-width: 40%;
-height: 250px;
-cursor: pointer;
-margin-bottom: 10px;
-margin-right: 0px;
-margin-left: auto;
-
+    width: 40%;
+    height: 250px;
+    cursor: pointer;
+    margin-bottom: 10px;
+    margin-right: 0px;
+    margin-left: auto;
 }
-.img-msg{
+
+/* --- RECEIVER STYLES (Mentor - Left Side) --- */
+
+.msg-body-2 {
+    margin-bottom: 10px;
+    margin-left: 5px;
+    margin-right: auto;   /* Pushes to left */
+    width: fit-content;   /* <--- FIX: Shrinks box to text size */
+    max-width: 60%;       /* Stops it from getting too wide */
+
+    padding: 10px;
+    border-radius: 5px;
+    background: rgb(255, 186, 247);
+    font-family: 'DM Sans';
+    color: rgb(7, 10, 10);
+    word-wrap: break-word;
+}
+
+/* Image/Video Container (Receiver) */
+.msg-3 {
+    display: block;
+    width: 40%;
+    height: 250px;
+    cursor: pointer;
+    margin-bottom: 10px;
+    margin-right: auto;
+    margin-left: 5px;
+}
+
+/* --- SHARED ELEMENTS --- */
+
+/* The actual image tag styling */
+.msg-2 {
     width: 100%;
-display: block;
-border: 1px solid rgb(213 213 213);
-border-radius: 5px;
-height: 100%;
-outline: none;
-
-}
-.msg-2{
     display: block;
-width: 40%;
-height: 250px;
-cursor: pointer;
-margin-bottom: 10px;
-margin-right: 0px;
-margin-left: auto;
-
+    border: 1px solid rgb(213, 213, 213);
+    border-radius: 5px;
+    height: 100%;
+    outline: none;
+    object-fit: cover;
 }
-.msg-body{
-    margin-bottom: 10px;
-margin-right: 0px;
-margin-left: auto;
-border-radius: 5px;
-background: rgb(186 201 255);
-max-width: 60%;
-padding: 10px;
-font-family: 'DM Sans';
-color: rgb(7 10 10);
 
-}
-.msg-3{
-    display: block;
-width: 40%;
-height: 250px;
-cursor: pointer;
-margin-bottom: 10px;
-margin-right: auto;
-margin-left: 5px;
-
-}
-.msg-body-2{
-    margin-bottom: 10px;
-margin-right: auto;
-margin-left: 5px;
-padding: 10px;
-border-radius: 5px;
-background: rgb(255, 186, 247);
-max-width: 60%;
-font-family: 'DM Sans';
-color: rgb(7, 10, 10);
-
-}
-.send-btn{
+/* Input Area Alignment */
+.send-msg-btn {
     flex-basis: 2%;
-margin-bottom: 0px;
-margin-top: auto;
-background: rgb(66, 142, 81);
-border-radius: 5px;
-padding: 15px;
-color: white;
-height: fit-content;
-cursor: pointer;
-
+    margin-bottom: 0px;
+    margin-top: auto;
+    background: rgb(66, 142, 81);
+    border-radius: 5px;
+    padding: 15px;
+    color: white;
+    height: fit-content;
+    cursor: pointer;
+    display: flex;         /* Centers icon */
+    align-items: center;   /* Centers icon */
+    justify-content: center;
 }

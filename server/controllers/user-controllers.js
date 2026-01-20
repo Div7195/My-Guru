@@ -36,7 +36,6 @@ export const signupUserController = async(request, response) => {
                 statistics:{},
                 
             })
-            console.log(newMentor)
             await newMentor.save();
         }else{
             const newMentor = new Student({
@@ -56,7 +55,6 @@ export const signupUserController = async(request, response) => {
                 
                 
             })
-            console.log(newMentor)
             await newMentor.save();
         }
         return response.status(200).json({temp, msg:'signup successfull'})
@@ -86,6 +84,7 @@ export const loginUserController = async(request, response) => {
             return response.status(400).json({msg:'Password does not match'});
         }
     } catch (error) {
+        console.log(error)
         return response.status(500).json({msg:'Error while login user'});
     }
 }

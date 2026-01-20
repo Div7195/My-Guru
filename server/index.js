@@ -48,19 +48,27 @@ const io = new Server(server, {
           
       });
       socket.on('send', async function(msg){
-        try {
+    try {
         const options = { new: true };
-        let chat = await Chat.findOne({_id:msg.chatId})
+        let chat = await Chat.findOne({_id:msg.chatId});
+        
         if(chat){
-            chat.messages.push(msg.msg)
-            await Chat.findOneAndUpdate({_id:msg.chatId}, chat, options )
+            // Push to array
+            chat.messages.push(msg.msg);
+            // Save and get the updated document
+            const updatedChat = await Chat.findOneAndUpdate({_id:msg.chatId}, chat, options);
+            
+            // CRITICAL FIX: Get the actual saved message from DB (which now has an _id)
+            // It will be the last item in the array
+            const savedMessage = updatedChat.messages[updatedChat.messages.length - 1];
+
+            // Emit the SAVED message, not the original payload
+            io.to(msg.chatId).emit('receive', { msg: savedMessage, chatId: msg.chatId });
         }
-        console.log("socket room is " + socket.room)
-        io.to(msg.chatId).emit('receive', msg);
-      } catch (error) {
-          
-      }
-      });
+    } catch (error) {
+        console.log(error);
+    }
+});
      
   });
 dbConnection(USERNAME, PASSWORD);
