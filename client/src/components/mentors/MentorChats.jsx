@@ -6,7 +6,8 @@ import { getAccessToken } from "../../utils/util"
 import { TextField } from "@mui/material";
 import dayjs from "dayjs";
 import SendIcon from '@mui/icons-material/Send';
-import {socket} from '../../service/socket.js'
+// import {socket} from '../../service/socket.js'
+import socket from "socket.io-client";
 import MentorSidebar from "../sidebar/MentorSidebar.jsx"
 import AttachmentIcon from '@mui/icons-material/Attachment';
 import FormLabel from '@mui/material/FormLabel';
@@ -16,6 +17,11 @@ const StudentChats = () => {
     
     const navigate = useNavigate()
     const {account}=useContext(DataContext);
+    const {setAccount} = useContext(DataContext);
+    const {chatId} = useParams()
+    const [messages, setMessages] = useState([])
+    const [imageFile, setImageFile] = useState(null)
+    const [chattingWith, setChattingWith] = useState('')
     const newMessageInitial = {
         senderRole:account.role,
         senderAccountId:account.id,
@@ -23,55 +29,26 @@ const StudentChats = () => {
         messageMediaLink:'',
         messageBody:'',
         messageTimestamp:new Date(),
-        seenFlag:false
+        seenFlag:false,
     }
-    const {setAccount} = useContext(DataContext);
-    const {chatId} = useParams()
-    const [messages, setMessages] = useState([])
     const [newMessage, setNewMessage] = useState(newMessageInitial)
-    const [imageFile, setImageFile] = useState(null)
-    const [chattingWith, setChattingWith] = useState('')
-    
-
+    const io = socket.connect("http://localhost:8000");
 
     const sendMessage = async() => {
         newMessage.messageTimestamp = dayjs(new Date()).$d
-        const settings = {
-         method: "POST",
-         body: JSON.stringify({
-            newMessage:newMessage
-         }),
-         headers: {
-             "Content-type": "application/json; charset=UTF-8",
-             'authorization' : getAccessToken()
-         }
-         }
          try {
-             console.log(settings.body)
-             const fetchResponse = await fetch(`http://localhost:8000/updateChatMessages?chatId=${chatId}`, settings);
-             const response = await fetchResponse.json();
-            if(response.msg.includes('success')){
-                
-                // messages.reverse()
-                // messages.push(newMessage)
-                // messages.reverse()
-                socket.emit('send', {
-                    msg:newMessage,
-                })
-                setNewMessage(newMessageInitial)
-                
-            }else{
-
-            }
+            io.emit('send', {
+                msg:newMessage,
+                chatId:chatId
+            })
+            setNewMessage(newMessageInitial)
              
          } catch (e) {
-             
              return e;
          }    
     }
-
-
     
+
 
     useEffect(() => {
       const myFunction = async() => {
@@ -87,30 +64,29 @@ const StudentChats = () => {
                     const fetchResponse = await fetch(url, settings);
                     const response = await fetchResponse.json();
                     console.log(response.data)
-                    
-                    response.data.reverse()
-                    setMessages(response.data);
+                    let arr = [];
+                    response.data.forEach((one) => {
+                    arr = [one, ...arr];
+                    });
+
+                    setMessages((msgs) => arr); 
+                    // response.data.reverse()
+                    // setMessages(response.data);
                     setChattingWith(response.name)
-                    socket.emit('joinroom', chatId);
+                    
                     } catch (e) {
                     console.log(e);
                     }
       }
 
       myFunction()
+      io.emit('joinroom', chatId);
     }, [])
 
-    socket.on('receive',(obj)=>{
-        console.log(messages.length)
-        let tempArray = []
-        for(let i = 0; i<messages.length;i++){
-            tempArray.push(messages[i])
-        }
-        
-        tempArray.reverse();
-        tempArray.push(obj.msg);
-        tempArray.reverse();
-        setMessages(tempArray);
+    io.on('receive',(obj)=>{
+        console.log(obj)
+        console.log('New message received:', obj.msg);
+        setMessages(prevMessages => [obj.msg, ...prevMessages]);
         })
     useEffect(() => {
         const storeImageAndGetLink = async() => {
@@ -131,8 +107,10 @@ const StudentChats = () => {
                   try {
                       const fetchResponse = await fetch(`http://localhost:8000/uploadImageMessage?chatId=${chatId}&role=${account.role}&senderAccountId=${account.id}`, settings);
                       const response = await fetchResponse.json();
-                      socket.emit('send', {
-                        msg:response.data
+
+                    io.emit('send', {
+                        msg:response.data,
+                        chatId:chatId
                     })
                     
                       
@@ -227,7 +205,7 @@ const StudentChats = () => {
                                         </div>
                                         :
 
-                                    <div className="msg-body-2">
+                                    <div className="msg-body-2" style={{background:'rgb(255 186 247)'}}>
                                     {e.messageBody}
                                     </div>
                                     }

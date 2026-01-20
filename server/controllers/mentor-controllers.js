@@ -55,7 +55,7 @@ export const createPostController = async(request, response) => {
         await newPost.save();
         temp.mentorPosts.push(newPost._id)
         const options = { new: true };
-        console.log(temp)
+        // console.log(temp)
         await Mentor.findOneAndUpdate({mentorAccountId:request.query.mentorAccountId}, temp, options);
         return response.status(200).json({msg:'created post successfully'})
     } catch (error) {
@@ -150,7 +150,7 @@ export const addLikeController = async(request, response) => {
         }
         
         temp.postLikes.push(request.query.likeUserId)
-        console.log(temp)
+        // console.log(temp)
         const options = {new : true}
         await Post.findOneAndUpdate({_id:request.query.postId}, temp, options);
         return response.status(200).json('success adding likes');

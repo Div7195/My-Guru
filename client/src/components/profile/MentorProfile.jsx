@@ -513,6 +513,20 @@ const MentorProfile = () => {
                 padding: '20px',  // Add padding for better visibility
                 boxSizing: 'border-box',  // Include padding in the width calculation
             }}>
+              <div style={{
+                    fontSize:'16px',
+                    fontFamily:'DM Sans',
+                    marginTop:'10px',
+                    backgroundColor:'#142683',
+                    borderRadius:'5px',
+                    fontWeight:400,
+                    cursor:'pointer',
+                    padding: '4px 4px 8px 4px',
+                    color:'white',
+                    width:'fit-content'
+                }}
+                onClick={()=>{updateProfile()}}
+                >Save Changes</div>
        
                 <Box style={{
                 width: '100%',  // Set the width to half of the screen

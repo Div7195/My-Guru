@@ -1,7 +1,7 @@
 import grid  from "gridfs-stream";
 import mongoose from "mongoose";
 import Chat from "../model/chat-schema.js";
-const url = 'https://career-junction.vercel.app'
+const url = 'http://localhost:8000'
 
 let gfs, gridfsBucket;
 const conn = mongoose.connection;

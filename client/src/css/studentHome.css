@@ -3,6 +3,8 @@
     display: flex;
     justify-content: center;
     font-family: 'DM Sans', sans-serif;
+    background:'#3b4464';
+    height: 95vh;
 }
 .sub-container{
     display: flex;
@@ -17,15 +19,15 @@
 .section-row-container{
     display: flex;
     flex-direction: row;
-    margin-top: 10px;
+    margin-top: 50px;
     padding: 10px;
     font-family: 'DM Sans', sans-serif;
     justify-content: space-between;
 }
 .card-heading{
-    font-size: 18px;
-    padding: 5px;
-    border-radius: 5px;
-    background: aliceblue;
+    font-size: 35px;
+    padding: 25px;
+    border-radius: 25px;
+    background: #f6cda4;
     font-weight: 700;
 }

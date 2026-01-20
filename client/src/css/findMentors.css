@@ -1,10 +1,11 @@
-.container{
+.boxC{
     width: 100%;
     display: flex;
     flex-direction: row;
     font-family: 'DM Sans';
+    height: fit-content;
 }
-.search-container{
+.search-boxC{
     display: flex;
     flex-direction: row;
     width: 100%;
@@ -13,11 +14,11 @@
 }
 .icon{
     cursor: pointer;
-    margin-top: 10px;
-    margin-left: -40px;
+    margin-top: 15px;
+    margin-left: -50px;
     z-index: 1;
 }
-.filter-container{
+.filter-boxC{
     display: flex;
     flex-direction: column;
     flex-basis: 40%;
@@ -27,7 +28,7 @@
     right: 5px;
     font-family: 'DM Sans', sans-serif;
 }
-.top-container{
+.top-boxC{
     font-size: 20px;
     display: flex;
     flex-direction: row;
@@ -57,7 +58,7 @@
     padding: 4px;
     color: white;
 }
-.query-exams-container{
+.query-exams-boxC{
     display: flex;
     flex-direction: row;
     width: 400px;

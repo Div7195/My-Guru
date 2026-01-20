@@ -30,7 +30,7 @@ border-radius: 60px;
 object-fit: cover;
 
 }
-.sub-container{
+.sub-box{
     display: flex;
 flex-direction: column;
 margin-left: 5px;
@@ -47,7 +47,7 @@ padding: 5px;
 background-color: #dad4f0;
 
 }
-.btns-container{
+.btns-box{
     display: flex;
 flex-direction: row;
 background: #f2f2f2;

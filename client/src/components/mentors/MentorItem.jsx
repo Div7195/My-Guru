@@ -6,7 +6,7 @@ import '../../css/mentorItem.css'
 const MentorItem = ({mentor}) => {
     return(
         <>
-            <div className="main-box">
+            <div className="main-boxC">
 
             {/* Image div start */}
                 <div className="image-box">

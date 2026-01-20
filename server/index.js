@@ -5,13 +5,15 @@ import Router from './routes/route.js';
 import cors from 'cors';
 import bodyParser from 'body-parser';
 import { Server } from 'socket.io';
+import Chat from './model/chat-schema.js';
 dotenv.config();
 
 const app = express();
+app.use(cors());
 app.use('/payment/post/update', express.raw({ type: 'application/json' }));
 app.use(bodyParser.json({extended:true}))
 app.use(bodyParser.urlencoded({extended:true}))
-app.use(cors());
+
 app.use('/',Router);
 
 
@@ -38,16 +40,26 @@ const io = new Server(server, {
       });
   
       socket.on("joinroom", (room) => {
-          socket.room = room
+        console.log("Request to join room " + room)
           socket.join(room);
+          // socket.join(room);
           console.log("User Joined Room: " + room);
           console.log('socket id is' + socket.id)
           
       });
-      socket.on('send', function(msg){
-        
-        console.log(msg.msg)
-        io.to(socket.room).emit('receive', msg);
+      socket.on('send', async function(msg){
+        try {
+        const options = { new: true };
+        let chat = await Chat.findOne({_id:msg.chatId})
+        if(chat){
+            chat.messages.push(msg.msg)
+            await Chat.findOneAndUpdate({_id:msg.chatId}, chat, options )
+        }
+        console.log("socket room is " + socket.room)
+        io.to(msg.chatId).emit('receive', msg);
+      } catch (error) {
+          
+      }
       });
      
   });

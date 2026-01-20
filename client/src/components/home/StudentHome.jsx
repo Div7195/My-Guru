@@ -41,7 +41,9 @@ const StudentHome = () =>{
                 <div style={{
                 display:'flex',
                 flexDirection:'column',
-                width:'100%'
+                width:'100%',
+                background:'#3b4464',
+                height:'100%'
                 }}>
 
                 <div className="sub-container">
@@ -75,7 +77,7 @@ const StudentHome = () =>{
                 <div>
 
                         <div className="card-heading">
-                            Top Experts in AIEEE
+                            Top Experts in JEE
                         </div>
 
                         <div style={{
@@ -83,14 +85,14 @@ const StudentHome = () =>{
                             background:'aliceblue',
                             borderRadius:'5px',
                         }}>
-
+                            
                         </div>
 
                 </div>
 
                 <div>
                         <div className="card-heading">
-                            Top Experts in AIEEE
+                            Top Experts in NEET
                         </div>
 
                         <div style={{
@@ -103,7 +105,7 @@ const StudentHome = () =>{
                 </div>
                 <div>
                         <div className="card-heading">
-                            Top Experts in AIEEE
+                            Top Experts in UPSC
                         </div>
 
                         <div style={{
@@ -120,7 +122,7 @@ const StudentHome = () =>{
                 <div className="section-row-container">
                 <div>
                         <div className="card-heading">
-                            Top Experts in AIEEE
+                            Top Experts in GATE
                         </div>
 
                         <div style={{
@@ -134,7 +136,7 @@ const StudentHome = () =>{
 
                 <div>
                         <div className="card-heading">
-                            Top Experts in AIEEE
+                            Top Experts in CA/CFA
                         </div>
 
                         <div style={{
@@ -147,7 +149,7 @@ const StudentHome = () =>{
                 </div>
                 <div>
                         <div className="card-heading">
-                            Top Experts in AIEEE
+                            Top Experts in RRB
                         </div>
 
                         <div style={{

@@ -12,7 +12,7 @@ margin-bottom: 5px;
 margin-top: auto;
 
 }
-.chats-container{
+.chats-box{
     display: flex;
 flex-direction: column-reverse;
 max-height: 580px;

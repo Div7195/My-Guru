@@ -373,6 +373,8 @@ export const getYourPlansController = async(request, response) => {
         let result  = []
         const options = { new: true };
         let studentSubscriptions = await Subscription.find({studentAccountId:request.query.studentAccountId, status:true})
+        console.log('woowow')
+        
         for(let i = 0; i< studentSubscriptions.length;i++){
             let timeDifference = moment(new Date(studentSubscriptions[i].purchaseTimestamp)).from(new Date())
             if(timeDifference.includes('month') || timeDifference.includes('year')){
@@ -386,12 +388,14 @@ export const getYourPlansController = async(request, response) => {
         for(let i = 0;i<studentSubscriptions.length;i++){
             let mentor = await Mentor.findOne({mentorAccountId:studentSubscriptions[i].mentorAccountId})
             let plan = {}
-            for(let i = 0;i<mentor.mentorPlans.length;i++){
-                if(mentor.mentorPlans[i]._id.toString() === studentSubscriptions[i].planId){
-                    plan = mentor.mentorPlans[i]
+            for(let j = 0;j<mentor.mentorPlans.length;j++){
+                console.log(studentSubscriptions)
+                if(mentor.mentorPlans[j]._id.toString() === studentSubscriptions[i].planId){
+                    plan = mentor.mentorPlans[j]
                     break
                 }
             }
+            console.log(plan)
             result.push({
                 videoCalls:plan.videoCalls,
                 streams:plan.streams,
@@ -610,6 +614,29 @@ export const getBookmarkedPostsController = async(request, response) => {
             let querySubjects = []
             let sortBy = ''
             let searchQueryArray = []
+            if(request.query.searchQuery === '' && request.query.queryExams === '' && request.query.querySubjects === '' && request.query.sortBy === ''){
+                for(let i = 0; i<objArrayOfMentors.length;i++){
+                    // if(queryExams.length === 0 && querySubjects.length === 0){
+                    //     if(request.query.userRole === 'student' && student.studentExams.length === 0 && student.studentSubjects.length ===0){
+                    //         if(result.length === 5) break
+                    //     }else if(request.query.userRole === 'mentor' && mentor.mentorExams.length === 0 && mentor.mentorSubjects.length ===0){
+                    //         if(result.length === 5) break
+                    //     }
+                    // }
+                    result.push({
+                        mentorAccountId:objArrayOfMentors[i].mentorAccountId,
+                        mentorName:objArrayOfMentors[i].mentorName,
+                        mentorTagline:objArrayOfMentors[i].mentorTagline,
+                        mentorImage:objArrayOfMentors[i].mentorImage,
+                        mentorExams:objArrayOfMentors[i].mentorExams,
+                        mentorSubjects:objArrayOfMentors[i].mentorSubjects,
+                        mentorRating:objArrayOfMentors[i].rating,
+                        mentorStudentsCount:0
+                    })
+                }
+                return response.status(200).json({data:result})
+            }
+            // console.log(request.query.searchQuery, request.query.queryExams, request.query.querySubjects, request.query.sortBy);
             if(request.query.searchQuery !== ''){
                 searchQueryArray = request.query.searchQuery.split(" ")
             }
@@ -808,7 +835,7 @@ export const paymentController = async(request, response) => {
                         success_url:`${process.env.CLIENT_URL}/public/success.html`,
                         cancel_url:`${process.env.CLIENT_URL}/public/cancel.html`,
                     })
-                    console.log(session)
+                    // console.log(session)
                     return  response.status(200).json({url:session.url})
                 }
                 
@@ -825,7 +852,8 @@ export const paymentController = async(request, response) => {
 export const postPaymentController = async(request, response) => {
     
     try {
-        console.log('ooooooooooooooooooooooo')
+        
+        // return response.status(200).json({message:'working'})
     const sig = request.headers['stripe-signature'];
     const stripe = new Stripe(process.env.STRIPE_PRIVATE_KEY);
     const endpointSecret = process.env.ENDPOINT_SECRET_KEY
@@ -839,6 +867,7 @@ export const postPaymentController = async(request, response) => {
               // handlePaymentIntentSucceeded(paymentIntent);
               break;
               case 'checkout.session.completed':
+                console.log('ooooooooooooooooooo')
               const intent = event.data.object;
               console.log(intent)
               
@@ -863,40 +892,7 @@ export const postPaymentController = async(request, response) => {
                     })
                     await newChat.save()
                     return response.status(200).json({msg:'payment done and details saved success'})
-                    // const options = { new: true };
-                    // student.studentMentors.push({
-                    //     mentorAccountId:mentorAccountId,
-                    //     status:true
-                    // })
-                    // student.studentPlans.push({
-                    //     planId:planId,
-                    //     purchaseDate:new Date(),
-                    //     active:true
-                    // })
-                    // mentor.mentorFollowers.push({
-                    //     studentAccountId:studentAccountId,
-                    //     status:true
-                    // })
-                    // for(let i = 0;i<mentor.mentorPlans.length;i++){
-                    //     if(mentor.mentorPlans[i]._id.toString() === planId){
-                    //         mentor.mentorPlans[i].students.push({
-                    //             studentAccountId:studentAccountId,
-                    //             status:true
-                    //         })
-                    //         console.log(mentor.mentorPlans[i])
-                    //         break
-                    //     }
-                    // }
-                    // console.log(student)
-                    
-                    // student  = await Student.findOneAndUpdate({studentAccountId:studentAccountId}, student, options)
-                    // mentor  = await Mentor.findOneAndUpdate({mentorAccountId:mentorAccountId}, mentor, options)
                 }
-              
-
-
-              // Then define and call a method to handle the successful payment intent.
-              // handlePaymentIntentSucceeded(paymentIntent);
               break;
             case 'payment_method.attached':
               const paymentMethod = event.data.object;

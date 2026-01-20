@@ -6,11 +6,11 @@ import { getAccessToken } from "../../utils/util"
 import { TextField } from "@mui/material";
 import dayjs from "dayjs";
 import SendIcon from '@mui/icons-material/Send';
-import {socket} from '../../service/socket.js'
+// import {socket} from '../../service/socket.js'
+import socket from "socket.io-client";
 import AttachmentIcon from '@mui/icons-material/Attachment';
 import FormLabel from '@mui/material/FormLabel';
 import FormControl from '@mui/material/FormControl';
-import '../../css/studentChats.css'
 const StudentChats = () => {
     
     const navigate = useNavigate()
@@ -31,34 +31,15 @@ const StudentChats = () => {
     const [imageFile, setImageFile] = useState(null)
     const [check, setCheck] = useState(false)
     const [chattingWith, setChattingWith] = useState('')
+    const io = socket.connect("http://localhost:8000");
     const sendMessage = async() => {
         newMessage.messageTimestamp = dayjs(new Date()).$d
-        const settings = {
-         method: "POST",
-         body: JSON.stringify({
-            newMessage:newMessage
-         }),
-         headers: {
-             "Content-type": "application/json; charset=UTF-8",
-             'authorization' : getAccessToken()
-         }
-         }
          try {
-             console.log(settings.body)
-             const fetchResponse = await fetch(`http://localhost:8000/updateChatMessages?chatId=${chatId}`, settings);
-             setNewMessage(newMessageInitial)
-             const response = await fetchResponse.json();
-             
-            if(response.msg.includes('success')){
-                socket.emit('send', {
-                    msg:newMessage,
-                })
-                
-                
-            }else{
-
-            }
-             
+            io.emit('send', {
+                msg:newMessage,
+                chatId:chatId
+            })
+            setNewMessage(newMessageInitial)
          } catch (e) {
              
              return e;
@@ -82,31 +63,31 @@ const StudentChats = () => {
                     const fetchResponse = await fetch(url, settings);
                     const response = await fetchResponse.json();
                     console.log(response.data)
-                    
-                    response.data.reverse()
-                    setMessages(response.data);
+                    let arr = [];
+                    response.data.forEach((one) => {
+                    arr = [one, ...arr];
+                    });
+
+                    setMessages((msgs) => arr); 
+                    // response.data.reverse()
+                    // setMessages(response.data);
                     setChattingWith(response.name)
-                    socket.emit('joinroom', chatId);
+                    
                     } catch (e) {
                     console.log(e);
                     }
       }
 
       myFunction()
+      io.emit('joinroom', chatId);
     }, [])
-    socket.on('receive',(obj)=>{
-        console.log(messages.length)
-        let tempArray = []
-        for(let i = 0; i<messages.length;i++){
-            tempArray.push(messages[i])
-        }
-        
-        tempArray.reverse();
-        tempArray.push(obj.msg);
-        tempArray.reverse();
-        setMessages(tempArray);
+    
+    io.on('receive',(obj)=>{
+        console.log(obj)
+        console.log('New message received:', obj.msg);
+        setMessages(prevMessages => [obj.msg, ...prevMessages]);
+        // setQuery(queryInitial)
         })
-
     useEffect(() => {
         const storeImageAndGetLink = async() => {
           
@@ -124,11 +105,11 @@ const StudentChats = () => {
                   
                   }
                   try {
-                      const fetchResponse = await fetch(`http://localhost:8000/uploadImageMessage?chatId=${chatId}&role=${account.role}&senderAccountId=${account.id}`, settings);
+                      const fetchResponse = await fetch(`hhttp://localhost:8000/uploadImageMessage?chatId=${chatId}&role=${account.role}&senderAccountId=${account.id}`, settings);
                       const response = await fetchResponse.json();
-                      socket.emit('send', {
-                        msg:response.data
-                    })
+                    //   socket.emit('send', {
+                    //     msg:response.data
+                    // })
                     
                       
                   } catch (e) {
@@ -154,16 +135,32 @@ const StudentChats = () => {
             justifyContent:'center'
           }}>
                 <StudentSidebar/>
-                <div className="main-box">
+                <div style={{
+                    display:'flex',
+                    flexBasis:"70%",
+                    flexDirection:'column',
+                    height:'600px'
+                    
+                }}>
                 <div style={{
                     fontSize:'20px',
                     color:'black'
                 }}>
                     Chatting with mentor - {chattingWith}
                 </div>
-                        <div className="chats-parent-box">
+                        <div style={{
+                            display:'flex',
+                            flexDirection:'column',
+                            marginBottom:'5px',
+                            marginTop:'auto',
+                        }}>
                 
-                    <div className="chats-container">
+                    <div style={{
+                        display:'flex',
+                        flexDirection:'column-reverse',
+                        maxHeight:'580px',
+                        overflowY:'auto',
+                        }}>
 
                         {
                             messages && messages.length > 0 ? messages.map(e => (
@@ -172,16 +169,40 @@ const StudentChats = () => {
                                         account.role === e.senderRole ?
                                         e.messageType === 'image' || e.messageType === 'video'?
                                         e.messageType === 'image'?
-                                        <div className="msg-1"
+                                        <div style={{
+                                            display: 'block',
+                                            width: '40%',
+                                            height: '250px',
+                                            cursor:'pointer',
+                                            marginBottom:'10px',
+                                            marginRight:'0px',
+                                            marginLeft:'auto',
+                                        }}
                                         onClick={() => {
                                             
                                         }}
                                         >
-                                            <img src={e.messageMediaLink && e.messageMediaLink !== ""?e.messageMediaLink:'https://e7.pngegg.com/pngimages/178/595/png-clipart-user-profile-computer-icons-login-user-avatars-monochrome-black.png'}alt="Post Image" className="img-msg" />
+                                            <img src={e.messageMediaLink && e.messageMediaLink !== ""?e.messageMediaLink:'https://e7.pngegg.com/pngimages/178/595/png-clipart-user-profile-computer-icons-login-user-avatars-monochrome-black.png'}alt="Post Image" style={{
+                                            width:'100%',
+                                            display: 'block',     
+                                            width: '100%',
+                                            border:'1px solid rgb(213 213 213)',
+                                            borderRadius:'5px',
+                                            height: '100%',
+                                            outline: 'none' ,
+                                            }} />
                                         </div>
                                        :
                                        
-                                        <div className="msg-2"
+                                        <div style={{
+                                            display: 'block',
+                                            width: '40%',
+                                            height: '250px',
+                                            cursor:'pointer',
+                                            marginBottom:'10px',
+                                            marginRight:'0px',
+                                            marginLeft:'auto',
+                                        }}
                                         onClick={() => {
                                             
                                         }}
@@ -193,7 +214,17 @@ const StudentChats = () => {
                                         </div>
                                         :
 
-                                        <div className="msg-body">
+                                        <div style={{
+                                        marginBottom:'10px',
+                                        marginRight:'0px',
+                                        marginLeft:'auto',
+                                        borderRadius:'5px',
+                                        background:'rgb(186 201 255)',
+                                        maxWidth:'60%',
+                                        padding:'10px',
+                                        fontFamily:'DM Sans',
+                                        color:'rgb(7 10 10)'
+                                    }}>
                                     {e.messageBody}
                                     </div>
 
@@ -202,16 +233,40 @@ const StudentChats = () => {
 
                                     e.messageType === 'image' || e.messageType === 'video'?
                                     e.messageType === 'image' ?
-                                    <div className="msg-3"
+                                    <div style={{
+                                            display: 'block',
+                                            width: '40%',
+                                            height: '250px',
+                                            cursor:'pointer',
+                                            marginBottom:'10px',
+                                            marginRight:'auto',
+                                            marginLeft:'5px',
+                                        }}
                                         onClick={() => {
                                             
                                         }}
                                         >
-                                            <img src={e.messageMediaLink && e.messageMediaLink !== ""?e.messageMediaLink:'https://e7.pngegg.com/pngimages/178/595/png-clipart-user-profile-computer-icons-login-user-avatars-monochrome-black.png'}alt="Post Image" className="img-msg" />
+                                            <img src={e.messageMediaLink && e.messageMediaLink !== ""?e.messageMediaLink:'https://e7.pngegg.com/pngimages/178/595/png-clipart-user-profile-computer-icons-login-user-avatars-monochrome-black.png'}alt="Post Image" style={{
+                                            width:'100%',
+                                            display: 'block',     
+                                            width: '100%',
+                                            border:'1px solid rgb(213 213 213)',
+                                            borderRadius:'5px',
+                                            height: '100%',
+                                            outline: 'none' ,
+                                            }} />
                                         </div>
                                         :
                                         
-                                        <div className="msg-3"
+                                        <div style={{
+                                            display: 'block',
+                                            width: '40%',
+                                            height: '250px',
+                                            cursor:'pointer',
+                                            marginBottom:'10px',
+                                            marginRight:'auto',
+                                            marginLeft:'5px',
+                                        }}
                                         onClick={() => {
                                             
                                         }}
@@ -223,7 +278,17 @@ const StudentChats = () => {
                                         </div>
                                         :
 
-                                    <div className="msg-body-2">
+                                    <div style={{
+                                        marginBottom:'10px',
+                                        marginRight:'auto',
+                                        marginLeft:'5px',
+                                        padding:'10px',
+                                        borderRadius:'5px',
+                                        background:'rgb(255 186 247)',
+                                        maxWidth:'60%',
+                                        fontFamily:'DM Sans',
+                                        color:'rgb(7 10 10)'
+                                    }}>
                                     {e.messageBody}
                                     </div>
                                     }
@@ -283,7 +348,17 @@ const StudentChats = () => {
                     />
                 </div>
                 
-                <div className="send-btn"
+                <div style={{
+                    flexBasis:'2%',
+                    marginBottom:'0px',
+                    marginTop:'auto',
+                    background:"rgb(66 142 81)",
+                    borderRadius:'5px',
+                    padding:'15px',
+                    color:'white',
+                    height:'fit-content',
+                    cursor:'pointer'
+                }}
                 onClick={() => {sendMessage()}}
                 >
                 <SendIcon/>

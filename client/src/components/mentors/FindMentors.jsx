@@ -119,7 +119,7 @@ const FindMentors = () => {
                 flexBasis:'60%',
                 
                 }}>
-                    <div className="search-container">
+                    <div className="search-boxC">
                     <TextField
                     onChange={(e) => {setFilter({...filter, searchQuery:e.target.value}); console.log(filter)}}
                     inputProps={{
@@ -167,9 +167,9 @@ const FindMentors = () => {
         }
         </div>
         </div>
-        <div className="filter-container">
+        <div className="filter-boxC">
 
-                <div className="top-container">
+                <div className="top-boxC">
                 <div>
                 Mentors Filter
                 </div>
@@ -222,7 +222,7 @@ const FindMentors = () => {
                     </NativeSelect>
 
                 </FormControl>
-                <div className="query-exams-container">
+                <div className="query-exams-boxC">
 
                         
 
@@ -287,7 +287,7 @@ const FindMentors = () => {
                     </NativeSelect>
 
                 </FormControl>
-                <div className="query-exams-container">
+                <div className="query-exams-boxC">
 
                         
 

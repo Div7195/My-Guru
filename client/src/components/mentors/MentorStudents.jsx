@@ -66,7 +66,7 @@ const MentorStudents = () => {
                      <div className="image-box">
                     <img src={'https://e7.pngegg.com/pngimages/178/595/png-clipart-user-profile-computer-icons-login-user-avatars-monochrome-black.png'}alt="Student Image" className="image" />
                 </div>
-                    <div className="sub-container"
+                    <div className="sub-box"
                 >
                 <div style={{
                     display:'flex',
@@ -82,7 +82,7 @@ const MentorStudents = () => {
 
                 </div>
 
-                        <div className="btns-container">
+                        <div className="btns-box">
                                     <div className="chats-btn"
                                     onClick={() => {navigate(`/mentor/chats/${e.chatId}`)}}
                                     >

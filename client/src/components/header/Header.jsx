@@ -309,33 +309,11 @@ export default function Header() {
           >
            
           </Typography>
-          <Search>
-            <SearchIconWrapper>
-              <SearchIcon style={{ color: '#00ecff' }} />
-            </SearchIconWrapper>
-            <StyledInputBase
-              placeholder="Search…"
-              inputProps={{ 'aria-label': 'search' }}
-            />
-          </Search>
+         
           <Box sx={{ flexGrow: 1 }} />
           <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
-            <IconButton size="large" aria-label="show 4 new mails" color="inherit" style={{marginLeft:'10px'}} onClick={() => { if(location.pathname.includes('messaging') === false) navigate('/messaging')}}>
-              <Badge badgeContent={4} color="error">
-                <MailIcon style={{ color: '#00ecff' , fontSize:'30px'}} />
-              </Badge>
-            </IconButton>
-            <IconButton
-              size="large"
-              aria-label="show 17 new notifications"
-              color="inherit"
-              style={{ color: '#00ecff' ,marginLeft:'10px'}}
-              onClick={() => { if(location.pathname.includes('notifications') === false) navigate('/notifications')}}
-            >
-              <Badge badgeContent={17} color="error">
-                <NotificationsIcon style={{ color: '#00ecff', fontSize:'30px'}} />
-              </Badge>
-            </IconButton>
+            
+            
             <IconButton
               size="large"
               edge="end"
